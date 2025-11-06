@@ -142,6 +142,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify'
 
 const clients = ref([])
 const selectedClientId = ref('')
@@ -176,7 +177,7 @@ async function fetchPreviousReading() {
 // Calculate bill
 async function calculateBill() {
   if (!selectedClientId.value || !currentReading.value) {
-    alert('Select client and enter current reading!');
+    toast.error('Select client and enter current reading!');
     return;
   }
 
@@ -209,7 +210,7 @@ async function saveReading() {
       client: selectedClientId.value,
       current_reading: bill.value.current_reading,
     })
-    alert('Reading saved successfully!')
+    toast.success('Reading saved successfully!')
     router.push('/history')
     console.log('Saved reading:', res.data)
   } catch (err) {
