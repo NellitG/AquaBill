@@ -1,20 +1,32 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-// import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'url'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    // tailwindcss()
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
   css: {
-    postcss: './postcss.config.js', 
+    postcss: './postcss.config.js',
+  },
+  build: {
+    chunkSizeWarningLimit: 600, // optional – suppress warning
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vue: ['vue', 'vue-router', 'pinia'],
+          utils: ['./src/utils/index.js'],
+          vendor: [
+            'axios',
+            'chart.js',
+            'dayjs',
+            // add any other heavy libs here
+          ]
+        }
+      }
+    }
   }
 })

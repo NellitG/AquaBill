@@ -2,25 +2,18 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import router from "./router";
 import App from "./App.vue";
-import VueApexCharts from "vue3-apexcharts";
 import Toast from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-
-/**styling */
-// import "./style.css";
-import "./assets/tailwind.css"; //tailwind
-
-// setup fake backend
-import { fakeBackend } from "./helpers";
-fakeBackend();
+import "./assets/tailwind.css"; // Tailwind CSS
 
 const app = createApp(App);
-const pinia = createPinia();
-
-app.use(pinia);
+app.use(createPinia());
 app.use(router);
 app.use(Toast);
 
-app.use(VueApexCharts);
-app.component("apexchart", VueApexCharts);
+// Only load fake backend in dev mode
+if (import.meta.env.DEV) {
+  import("./helpers").then(({ fakeBackend }) => fakeBackend());
+}
+
 app.mount("#app");
