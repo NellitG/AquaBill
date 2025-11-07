@@ -18,12 +18,12 @@ export default defineConfig({
       output: {
         manualChunks: {
           vue: ['vue', 'vue-router', 'pinia'],
-          utils: ['./src/utils/index.js'],
+          // utils: ['./src/utils/index.js'],
           vendor: [
             'axios',
             'chart.js',
             'dayjs',
-            // add any other heavy libs here
+            
           ]
         }
       }
