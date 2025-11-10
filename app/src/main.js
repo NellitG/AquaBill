@@ -4,9 +4,11 @@ import router from "./router";
 import App from "./App.vue";
 import Toast from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import "./assets/tailwind.css"; // Tailwind CSS
+import "./assets/tailwind.css"; 
+import VueApexCharts from "vue3-apexcharts";
 
 const app = createApp(App);
+app.use(VueApexCharts);
 app.use(createPinia());
 app.use(router);
 app.use(Toast);
