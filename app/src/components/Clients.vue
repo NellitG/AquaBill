@@ -129,8 +129,9 @@ const itemsPerPage = 5
 // ✅ Fetch clients
 async function fetchClients() {
   try {
+    const baseURL = import.meta.env.VITE_API_URL
     loading.value = true
-    const response = await axios.get('http://localhost:8000/api/clients/')
+    const response = await axios.get(`${baseURL}/clients/`)
     clients.value = response.data
   } catch (err) {
     console.error('Fetch clients failed:', err)
@@ -163,7 +164,8 @@ async function addClient() {
   }
 
   try {
-    const response = await axios.post('http://localhost:8000/api/clients/', newClient.value)
+    const baseURL = import.meta.env.VITE_API_URL
+    const response = await axios.post(`${baseURL}/clients/`, newClient.value)
     clients.value.push(response.data)
     resetForm()
     toast.success("Client added successfully!")

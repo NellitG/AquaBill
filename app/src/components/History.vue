@@ -177,7 +177,8 @@ const tableHeaders = [
 // --- Fetch data (defensive) ---
 async function fetchRecords() {
   try {
-    const res = await axios.get("http://localhost:8000/api/readings/"); // adjust endpoint if needed
+    const baseURL = import.meta.env.VITE_API_BASE_URL 
+    const res = await axios.get(`${baseURL}/readings/`); 
     // Ensure array
     billingRecords.value = Array.isArray(res.data) ? res.data : (res.data.results ?? []);
   } catch (err) {
