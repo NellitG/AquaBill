@@ -20,8 +20,7 @@ export default defineConfig({
           vue: ['vue', 'vue-router', 'pinia'],
           // utils: ['./src/utils/index.js'],
           vendor: [
-            'axios',
-            'dayjs',
+            'axios', 
             
           ]
         }
