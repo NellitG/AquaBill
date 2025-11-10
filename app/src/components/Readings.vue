@@ -155,7 +155,7 @@ const bill = ref(null)
 async function fetchClients() {
   try {
     const baseURL = import.meta.env.VITE_API_URL 
-    const res = await axios.get(`${baseURL}/clients/`)
+    const res = await axios.get(`${baseURL}/api/clients/`)
     clients.value = res.data
   } catch (err) {
     console.error('Failed to load clients:', err)
@@ -167,7 +167,7 @@ async function fetchPreviousReading() {
   if (!selectedClientId.value) return
   try {
     const baseURL = import.meta.env.VITE_API_URL
-    const res = await axios.get(`${baseURL}/clients/${selectedClientId.value}/previous-reading/`)
+    const res = await axios.get(`${baseURL}/api/clients/${selectedClientId.value}/previous-reading/`)
     previousReading.value = res.data.previous_reading || 0
   } catch (error) {
     console.error('Failed to fetch previous reading:', error)
@@ -187,7 +187,7 @@ async function calculateBill() {
     const baseURL = import.meta.env.VITE_API_URL
     const client = clients.value.find(c => c.id === selectedClientId.value);
     const response = await axios.post(
-      `${baseURL}/clients//${selectedClientId.value}/calculate-bill/`,
+      `${baseURL}/clients//${selectedClientId.value}/api/calculate-bill/`,
       {
         current_reading: currentReading.value,
         rate_per_unit: ratePerUnit.value,
@@ -209,7 +209,8 @@ async function calculateBill() {
 async function saveReading() {
   if (!bill.value) return
   try {
-    const res = await axios.post('https://water-5g2v.onrender.com/api/readings/', {
+    const baseURL = import.meta.env.VITE_API_URL
+    const res = await axios.post(`${baseURL}/api/readings/`, {
       client: selectedClientId.value,
       current_reading: bill.value.current_reading,
     })

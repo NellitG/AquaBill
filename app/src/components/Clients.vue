@@ -131,7 +131,7 @@ async function fetchClients() {
   try {
     const baseURL = import.meta.env.VITE_API_URL
     loading.value = true
-    const response = await axios.get(`${baseURL}/clients/`)
+    const response = await axios.get(`${baseURL}/api/clients/`)
     clients.value = response.data
   } catch (err) {
     console.error('Fetch clients failed:', err)
@@ -165,7 +165,7 @@ async function addClient() {
 
   try {
     const baseURL = import.meta.env.VITE_API_URL
-    const response = await axios.post(`${baseURL}/clients/`, newClient.value)
+    const response = await axios.post(`${baseURL}/api/clients/`, newClient.value)
     clients.value.push(response.data)
     resetForm()
     toast.success("Client added successfully!")

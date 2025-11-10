@@ -124,7 +124,7 @@ const revenueChartOptions = ref({
 onMounted(async () => {
   try {
     const baseURL = import.meta.env.VITE_API_URL
-    const res = await fetch(`${baseURL}/dashboard-stats/`);
+    const res = await fetch(`${baseURL}/api/dashboard-stats/`);
     const data = await res.json();
 
     totalClients.value = data.total_clients;

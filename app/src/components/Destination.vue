@@ -37,7 +37,7 @@
         >
           <div class="relative top-[5%] hidden w-[40vw] sm:w-[25vw] md:block lg:w-[22vw]">
             <img
-              class="aspect-[2/3] w-full object-cover"
+              class=" w-full object-cover"
               src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image.svg"
               alt="Relume placeholder image 1"
             />
@@ -52,7 +52,7 @@
             </div>
             <div class="relative w-[30vw] flex-none md:w-[15vw]">
               <img
-                class="aspect-[3/4] w-full object-cover"
+                class="w-full object-cover"
                 src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image.svg"
                 alt="Relume placeholder image 3"
               />
@@ -79,7 +79,7 @@
         >
           <div class="relative top-[5%] w-[40vw] md:w-[25vw] lg:w-[22vw]">
             <img
-              class="aspect-[3/4] w-full object-cover"
+              class="w-full object-cover"
               src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image.svg"
               alt="Relume placeholder image 6"
             />
