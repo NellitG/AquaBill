@@ -21,7 +21,6 @@ export default defineConfig({
           // utils: ['./src/utils/index.js'],
           vendor: [
             'axios',
-            'chart.js',
             'dayjs',
             
           ]
