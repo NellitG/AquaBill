@@ -187,7 +187,7 @@ async function calculateBill() {
     const baseURL = import.meta.env.VITE_API_URL
     const client = clients.value.find(c => c.id === selectedClientId.value);
     const response = await axios.post(
-      `${baseURL}/clients/${selectedClientId.value}/api/calculate-bill/`,
+      `${baseURL}/api/clients/${selectedClientId.value}/calculate-bill/`,
       {
         current_reading: currentReading.value,
         rate_per_unit: ratePerUnit.value,
