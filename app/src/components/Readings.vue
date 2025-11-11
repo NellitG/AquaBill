@@ -204,8 +204,6 @@ async function calculateBill() {
   }
 }
 
-
-
 async function saveReading() {
   if (!bill.value) return
   try {
@@ -221,8 +219,6 @@ async function saveReading() {
     console.error('Failed to save reading:', err.response?.data || err)
   }
 }
-
-
 
 // ✅ Print receipt
 function printReceipt() {
