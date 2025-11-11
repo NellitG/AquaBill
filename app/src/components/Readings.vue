@@ -176,6 +176,7 @@ async function fetchPreviousReading() {
 }
 
 
+// Calculate bill
 async function calculateBill() {
   if (!selectedClientId.value || !currentReading.value) {
     toast.error('Select client and enter current reading!');
@@ -183,17 +184,15 @@ async function calculateBill() {
   }
 
   try {
-    let baseURL = import.meta.env.VITE_API_URL?.replace(/\/+$/, '');
+    const baseURL = import.meta.env.VITE_API_URL
     const client = clients.value.find(c => c.id === selectedClientId.value);
-    if (!client) throw new Error('Selected client not found.');
-
-    const endpoint = `${baseURL}/clients/${selectedClientId.value}/calculate-bill/`;
-    console.log('Requesting:', endpoint);
-
-    const response = await axios.post(endpoint, {
-      current_reading: currentReading.value,
-      rate_per_unit: ratePerUnit.value,
-    });
+    const response = await axios.post(
+      `${baseURL}/api/clients/${selectedClientId.value}/calculate-bill/`,
+      {
+        current_reading: currentReading.value,
+        rate_per_unit: ratePerUnit.value,
+      }
+    );
 
     bill.value = {
       ...response.data,
@@ -202,10 +201,8 @@ async function calculateBill() {
     };
   } catch (error) {
     console.error('Failed to calculate bill:', error);
-    toast.error('Could not calculate bill.');
   }
 }
-
 
 async function saveReading() {
   if (!bill.value) return
