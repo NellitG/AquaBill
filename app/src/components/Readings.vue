@@ -186,11 +186,8 @@ async function calculateBill() {
   try {
     const baseURL = import.meta.env.VITE_API_URL
     const client = clients.value.find(c => c.id === selectedClientId.value);
-
-    const apiUrl = `api/clients/${selectedClientId.value}/calculate-bill/`; 
-
     const response = await axios.post(
-      `${baseURL}${apiUrl}`, 
+      `${baseURL}/api/clients/calculate-bill/`,
       {
         current_reading: currentReading.value,
         rate_per_unit: ratePerUnit.value,
@@ -204,8 +201,6 @@ async function calculateBill() {
     };
   } catch (error) {
     console.error('Failed to calculate bill:', error);
-    // Added toast for failed calculation so the user sees it
-    toast.error('Failed to calculate bill. Check console for details.'); 
   }
 }
 
