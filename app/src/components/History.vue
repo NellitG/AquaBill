@@ -221,6 +221,26 @@ function prevPage() {
   if (currentPage.value > 1) currentPage.value--;
 }
 
+// --- Time and Date ---
+function formatDate(dateStr) {
+  if (!dateStr) return "—";
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-KE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function formatNumber(value) {
+  if (value === null || value === undefined) return "—";
+  return Number(value).toLocaleString("en-KE", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
 </script>
 
 <style>
