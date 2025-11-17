@@ -189,16 +189,19 @@ async function calculateBill() {
     const response = await axios.post(
       `${baseURL}/api/clients/${selectedClientId.value}/calculate-bill/`,
       {
-        current: currentReading.value,
+        current_reading: Number(currentReading.value),
+        rate_per_unit: 120,
       }
     );
 
     bill.value = response.data;
+
   } catch (err) {
     console.error('Failed to calculate bill:', err);
     toast.error('Failed to calculate bill!');
   }
 }
+
 
 
 async function saveReading() {
