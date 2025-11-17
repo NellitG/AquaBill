@@ -144,6 +144,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 
+const router = useRouter()
 
 const clients = ref([])
 const selectedClientId = ref('')
@@ -178,49 +179,53 @@ async function fetchPreviousReading() {
 
 
 // Calculate bill
-async function calculateBill() {
+async function calculateAndSaveReading() {
   if (!selectedClientId.value || !currentReading.value) {
-    toast.error('Select client and enter current reading!');
-    return;
+    toast.error('Select client and enter current reading!')
+    return
   }
 
-  try {
-    const baseURL = import.meta.env.VITE_API_URL;
+  const baseURL = import.meta.env.VITE_API_URL
+  let billData
 
+  try {
+    // 1️⃣ Calculate bill
     const response = await axios.post(
       `${baseURL}/api/clients/${selectedClientId.value}/calculate-bill/`,
       {
         current_reading: Number(currentReading.value),
         rate_per_unit: 120,
       }
-    );
+    )
 
-    bill.value = response.data;
+    billData = response.data
+    console.log('Calculated bill:', billData)
 
   } catch (err) {
-    console.error('Failed to calculate bill:', err);
-    toast.error('Failed to calculate bill!');
+    console.error('Failed to calculate bill:', err.response?.data || err)
+    toast.error('Failed to calculate bill!')
+    return
   }
-}
 
-
-const router = useRouter()
-
-async function saveReading() {
-  if (!bill.value) return
   try {
-    const baseURL = import.meta.env.VITE_API_URL
+    // 2️⃣ Save reading
     const res = await axios.post(`${baseURL}/api/readings/`, {
       client: selectedClientId.value,
-      current_reading: bill.value.current_reading,
+      current_reading: billData.current_reading,
     })
+
     toast.success('Reading saved successfully!')
-    router.push('/history')
     console.log('Saved reading:', res.data)
+
+    // 3️⃣ Navigate to history
+    router.push('/history')
+
   } catch (err) {
     console.error('Failed to save reading:', err.response?.data || err)
+    toast.error('Failed to save reading!')
   }
 }
+
 
 // ✅ Print receipt
 function printReceipt() {
