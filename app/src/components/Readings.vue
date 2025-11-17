@@ -184,23 +184,22 @@ async function calculateBill() {
   }
 
   try {
-    const baseURL = import.meta.env.VITE_API_URL
-    const client = clients.value.find(c => c.id === selectedClientId.value);
-    const response = await axios.post(`${baseURL}/api/calculate-bill/`, {
-      client_id: selectedClientId.value,
-      previous_reading: previousReading.value,
-      current_reading: currentReading.value,
-      rate_per_unit: ratePerUnit.value,
-    })
-    bill.value = {
-      ...response.data,
-      client_name: client.name,
-      meter_number: client.meter_number,
-    }
-  } catch (error) {
-    console.error('Failed to calculate bill:', error);
+    const baseURL = import.meta.env.VITE_API_URL;
+
+    const response = await axios.post(
+      `${baseURL}/api/clients/${selectedClientId.value}/calculate-bill/`,
+      {
+        current: currentReading.value,
+      }
+    );
+
+    bill.value = response.data;
+  } catch (err) {
+    console.error('Failed to calculate bill:', err);
+    toast.error('Failed to calculate bill!');
   }
 }
+
 
 async function saveReading() {
   if (!bill.value) return
