@@ -174,12 +174,11 @@ const tableHeaders = [
   "Units", "Rate", "Total Bill", "Receipt No."
 ];
 
-// --- Fetch data (defensive) ---
 // --- Fetch data (normalized) ---
 async function fetchRecords() {
   try {
-    const baseURL = import.meta.env.VITE_API_BASE_URL 
-    const res = await axios.get(`${baseURL}/api/readings/`); 
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const res = await axios.get(`${baseURL}/api/readings/`);
 
     // Ensure array and normalize fields
     billingRecords.value = (Array.isArray(res.data) ? res.data : res.data.results ?? []).map(r => ({
@@ -194,14 +193,13 @@ async function fetchRecords() {
       amount: r.amount ?? r.total_amount ?? ((r.current_reading ?? r.current ?? 0) - (r.previous_reading ?? r.previous ?? 0)) * (r.rate_per_unit ?? 120),
       receipt_number: r.receipt_number ?? null
     }));
-
   } catch (err) {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
 }
 
-// --- Receipt handling (frontend normalization) ---
+// --- Receipt handling ---
 function openReceipt(record) {
   selectedRecord.value = {
     id: record.id,
@@ -218,57 +216,6 @@ function openReceipt(record) {
   showReceipt.value = true;
 }
 
-onMounted(fetchRecords);
-
-// --- Filtering (search) ---
-const filteredRecords = computed(() => {
-  const q = (searchQuery.value || "").trim().toLowerCase();
-  if (!q) return billingRecords.value;
-  return billingRecords.value.filter((r) =>
-    Object.values(r || {})
-      .map(v => v === null ? "" : String(v))
-      .join(" ")
-      .toLowerCase()
-      .includes(q)
-  );
-});
-
-// Reset to first page when search or data changes
-watch([searchQuery, billingRecords], () => {
-  currentPage.value = 1;
-});
-
-// --- Pagination computed ---
-const totalPages = computed(() => Math.ceil(filteredRecords.value.length / itemsPerPage));
-const paginatedRecords = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  return filteredRecords.value.slice(start, start + itemsPerPage);
-});
-
-function nextPage() {
-  if (currentPage.value < totalPages.value) currentPage.value++;
-}
-function prevPage() {
-  if (currentPage.value > 1) currentPage.value--;
-}
-
-// --- Receipt handling ---
-function openReceipt(record) {
-  selectedRecord.value = {
-    id: record.id,
-    receipt_number: record.receipt_number ?? null,
-    date: record.date ?? null,
-    client_name: record.client_name ?? (record.client_name === undefined ? record.client?.name : ''),
-    meter_number: record.meter_number ?? (record.client?.meter_number ?? null),
-    previous_reading: record.previous_reading ?? record.previous ?? 0,
-    current_reading: record.current_reading ?? record.current ?? 0,
-    units_consumed: record.units_consumed ?? record.units_used ?? 0,
-    rate_per_unit: record.rate_per_unit ?? record.rate ?? 0,
-    amount: record.amount ?? record.total_amount ?? 0,
-  };
-  showReceipt.value = true;
-}
-
 function closeReceipt() {
   showReceipt.value = false;
   selectedRecord.value = {};
@@ -276,19 +223,12 @@ function closeReceipt() {
 
 // --- Safe printing ---
 function printReceipt() {
-  
   const contentEl = receiptRef.value;
-  let printHtml = "";
-  if (contentEl) {
-    printHtml = contentEl.innerHTML;
-  } else {
-   
-    printHtml = `
-      <div>
-        <h2>Receipt</h2>
-        <p>Receipt #: ${selectedRecord.value.receipt_number ?? "—"}</p>
-      </div>`;
-  }
+  let printHtml = contentEl ? contentEl.innerHTML : `
+    <div>
+      <h2>Receipt</h2>
+      <p>Receipt #: ${selectedRecord.value.receipt_number ?? "—"}</p>
+    </div>`;
 
   const w = window.open("", "", "width=700,height=900");
   if (!w) {
@@ -314,8 +254,7 @@ function printReceipt() {
 
   setTimeout(() => {
     w.print();
-    
-    try { w.close(); } catch (e) { /* ignore */ }
+    try { w.close(); } catch (e) {}
   }, 250);
 }
 
@@ -326,12 +265,43 @@ function formatDate(d) {
   if (isNaN(dt)) return String(d).slice(0, 19);
   return dt.toLocaleDateString();
 }
+
 function formatNumber(v) {
   if (v === null || v === undefined || v === "") return "—";
   const n = Number(v);
   return isNaN(n) ? String(v) : n % 1 === 0 ? String(n) : n.toFixed(2);
 }
+
+// --- Filtering (search) ---
+const filteredRecords = computed(() => {
+  const q = (searchQuery.value || "").trim().toLowerCase();
+  if (!q) return billingRecords.value;
+  return billingRecords.value.filter((r) =>
+    Object.values(r || {})
+      .map(v => v === null ? "" : String(v))
+      .join(" ")
+      .toLowerCase()
+      .includes(q)
+  );
+});
+
+// Reset to first page when search or data changes
+watch([searchQuery, billingRecords], () => { currentPage.value = 1; });
+
+// --- Pagination computed ---
+const totalPages = computed(() => Math.ceil(filteredRecords.value.length / itemsPerPage));
+const paginatedRecords = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return filteredRecords.value.slice(start, start + itemsPerPage);
+});
+
+function nextPage() { if (currentPage.value < totalPages.value) currentPage.value++; }
+function prevPage() { if (currentPage.value > 1) currentPage.value--; }
+
+// Auto-fetch records on mount
+onMounted(fetchRecords);
 </script>
+
 
 <style>
 body {
