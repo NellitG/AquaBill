@@ -122,7 +122,7 @@
 
           <div v-if="bill" class="flex justify-between items-center text-lg font-bold text-gray-800 mb-8">
             <span>Total Bill:</span>
-            <span class="text-blue-600">Ksh{{ bill.total_amount }}</span>
+            <span class="text-blue-600">Ksh{{ bill.amount }}</span>
           </div>
 
           <button
@@ -211,6 +211,7 @@ async function saveReading() {
     const res = await axios.post(`${baseURL}/api/readings/`, {
       client: selectedClientId.value,
       current_reading: bill.value.current_reading,
+      rate_per_unit: bill.value.rate_per_unit,
     })
     toast.success('Reading saved successfully!')
     router.push('/history')
