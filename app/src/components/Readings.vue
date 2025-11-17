@@ -144,7 +144,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 
-const router = useRouter()
+
 const clients = ref([])
 const selectedClientId = ref('')
 const previousReading = ref(0)
@@ -204,6 +204,7 @@ async function calculateBill() {
 }
 
 
+const router = useRouter()
 
 async function saveReading() {
   if (!bill.value) return
