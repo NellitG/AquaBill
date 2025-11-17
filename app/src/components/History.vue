@@ -221,21 +221,21 @@ function prevPage() {
 }
 
 // --- Receipt handling ---
-function openReceipt(record) {
-  selectedRecord.value = {
-    id: record.id,
-    receipt_number: record.receipt_number ?? null,
-    date: record.date ?? null,
-    client_name: record.client_name ?? (record.client_name === undefined ? record.client?.name : ''),
-    meter_number: record.meter_number ?? (record.client?.meter_number ?? null),
-    previous_reading: record.previous_reading ?? record.previous ?? 0,
-    current_reading: record.current_reading ?? record.current ?? 0,
-    units_consumed: record.units_consumed ?? record.units_used ?? 0,
-    rate_per_unit: record.rate_per_unit ?? record.rate ?? 0,
-    amount: record.amount ?? record.total_amount ?? 0,
-  };
-  showReceipt.value = true;
-}
+// function openReceipt(record) {
+//   selectedRecord.value = {
+//     id: record.id,
+//     receipt_number: record.receipt_number ?? null,
+//     date: record.date ?? null,
+//     client_name: record.client_name ?? (record.client_name === undefined ? record.client?.name : ''),
+//     meter_number: record.meter_number ?? (record.client?.meter_number ?? null),
+//     previous_reading: record.previous_reading ?? record.previous ?? 0,
+//     current_reading: record.current_reading ?? record.current ?? 0,
+//     units_consumed: record.units_consumed ?? record.units_used ?? 0,
+//     rate_per_unit: record.rate_per_unit ?? record.rate ?? 0,
+//     amount: record.amount ?? record.total_amount ?? 0,
+//   };
+//   showReceipt.value = true;
+// }
 
 function closeReceipt() {
   showReceipt.value = false;
