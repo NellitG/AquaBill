@@ -158,55 +158,73 @@
 import { ref, computed, onMounted, watch } from "vue";
 import axios from "axios";
 
+// --- Reactive state ---
 const billingRecords = ref([]);
 const searchQuery = ref("");
 const showReceipt = ref(false);
 const selectedRecord = ref({});
 const receiptRef = ref(null);
 
-// Pagination
+// --- Pagination ---
 const currentPage = ref(1);
 const itemsPerPage = 5;
 
-// Column headers
+// --- Table headers ---
 const tableHeaders = [
   "Date", "Client", "Meter No.", "Previous", "Current",
   "Units", "Rate", "Total Bill", "Receipt No."
 ];
 
-// --- Fetch data (defensive) ---
+// --- Fetch records from API ---
 async function fetchRecords() {
   try {
-    const baseURL = import.meta.env.VITE_API_BASE_URL 
-    const res = await axios.get(`${baseURL}/api/readings/`); 
-    // Ensure array
-    billingRecords.value = Array.isArray(res.data) ? res.data : (res.data.results ?? []);
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const res = await axios.get(`${baseURL}/api/readings/`);
+
+    // Normalize API response: always an array
+    let data = res.data;
+    if (!Array.isArray(data)) {
+      // Handle paginated response with 'results'
+      if (data.results && Array.isArray(data.results)) {
+        data = data.results;
+      } else if (data) {
+        data = [data]; // single object
+      } else {
+        data = [];
+      }
+    }
+
+    billingRecords.value = data;
+    console.log("Fetched billing records:", billingRecords.value);
   } catch (err) {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
 }
+
+// Fetch on mount
 onMounted(fetchRecords);
 
-// --- Filtering (search) ---
+// --- Search / Filter ---
 const filteredRecords = computed(() => {
   const q = (searchQuery.value || "").trim().toLowerCase();
   if (!q) return billingRecords.value;
+
   return billingRecords.value.filter((r) =>
     Object.values(r || {})
-      .map(v => v === null ? "" : String(v))
+      .map(v => v === null || v === undefined ? "" : String(v))
       .join(" ")
       .toLowerCase()
       .includes(q)
   );
 });
 
-// Reset to first page when search or data changes
+// Reset to first page on data or search change
 watch([searchQuery, billingRecords], () => {
   currentPage.value = 1;
 });
 
-// --- Pagination computed ---
+// --- Pagination ---
 const totalPages = computed(() => Math.ceil(filteredRecords.value.length / itemsPerPage));
 const paginatedRecords = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
@@ -220,7 +238,25 @@ function prevPage() {
   if (currentPage.value > 1) currentPage.value--;
 }
 
+// --- Receipt Modal ---
+function openReceipt(record) {
+  selectedRecord.value = record;
+  showReceipt.value = true;
+}
+function closeReceipt() {
+  showReceipt.value = false;
+  selectedRecord.value = {};
+}
+function printReceipt() {
+  if (!receiptRef.value) return;
+  const printContent = receiptRef.value.innerHTML;
+  const originalContent = document.body.innerHTML;
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+}
 </script>
+
 
 <style>
 body {
