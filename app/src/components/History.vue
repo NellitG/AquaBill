@@ -179,9 +179,9 @@ async function fetchRecords() {
   try {
     const baseURL = import.meta.env.VITE_API_BASE_URL 
     const res = await axios.get(`${baseURL}/api/readings/`); 
-
+    
     // Ensure array
-    billingRecords.value = Array.isArray(res.data) ? res.data : [res.data];
+    billingRecords.value = Array.isArray(res.data) ? res.data : (res.data.results ?? []);
   } catch (err) {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
