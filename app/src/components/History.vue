@@ -175,17 +175,49 @@ const tableHeaders = [
 ];
 
 // --- Fetch data (defensive) ---
+// --- Fetch data (normalized) ---
 async function fetchRecords() {
   try {
     const baseURL = import.meta.env.VITE_API_BASE_URL 
     const res = await axios.get(`${baseURL}/api/readings/`); 
-    // Ensure array
-    billingRecords.value = Array.isArray(res.data) ? res.data : (res.data.results ?? []);
+
+    // Ensure array and normalize fields
+    billingRecords.value = (Array.isArray(res.data) ? res.data : res.data.results ?? []).map(r => ({
+      id: r.id,
+      date: r.date,
+      client_name: r.client_name ?? r.client?.name ?? '—',
+      meter_number: r.meter_number ?? r.client?.meter_number ?? '—',
+      previous_reading: r.previous_reading ?? r.previous ?? 0,
+      current_reading: r.current_reading ?? r.current ?? 0,
+      units_consumed: r.units_consumed ?? ((r.current_reading ?? r.current ?? 0) - (r.previous_reading ?? r.previous ?? 0)),
+      rate_per_unit: r.rate_per_unit ?? r.rate ?? 120,
+      amount: r.amount ?? r.total_amount ?? ((r.current_reading ?? r.current ?? 0) - (r.previous_reading ?? r.previous ?? 0)) * (r.rate_per_unit ?? 120),
+      receipt_number: r.receipt_number ?? null
+    }));
+
   } catch (err) {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
 }
+
+// --- Receipt handling (frontend normalization) ---
+function openReceipt(record) {
+  selectedRecord.value = {
+    id: record.id,
+    date: record.date,
+    client_name: record.client_name ?? '—',
+    meter_number: record.meter_number ?? '—',
+    previous_reading: record.previous_reading ?? 0,
+    current_reading: record.current_reading ?? 0,
+    units_consumed: record.units_consumed ?? 0,
+    rate_per_unit: record.rate_per_unit ?? 120,
+    amount: record.amount ?? 0,
+    receipt_number: record.receipt_number ?? null
+  };
+  showReceipt.value = true;
+}
+
 onMounted(fetchRecords);
 
 // --- Filtering (search) ---
