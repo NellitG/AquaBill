@@ -185,6 +185,9 @@ async function calculateAndSaveReading() {
     return
   }
 
+  if (isLoading.value) return // prevent double click
+  isLoading.value = true
+
   const baseURL = import.meta.env.VITE_API_URL
   let billData
 
@@ -199,11 +202,13 @@ async function calculateAndSaveReading() {
     )
 
     billData = response.data
+    bill.value = billData
     console.log('Calculated bill:', billData)
 
   } catch (err) {
     console.error('Failed to calculate bill:', err.response?.data || err)
     toast.error('Failed to calculate bill!')
+    isLoading.value = false
     return
   }
 
@@ -217,12 +222,14 @@ async function calculateAndSaveReading() {
     toast.success('Reading saved successfully!')
     console.log('Saved reading:', res.data)
 
-    // 3️⃣ Navigate to history
+    // 3️⃣ Navigate to history page
     router.push('/history')
 
   } catch (err) {
     console.error('Failed to save reading:', err.response?.data || err)
     toast.error('Failed to save reading!')
+  } finally {
+    isLoading.value = false
   }
 }
 
