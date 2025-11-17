@@ -179,60 +179,46 @@ async function fetchPreviousReading() {
 
 
 // Calculate bill
-async function calculateAndSaveReading() {
+async function calculateBill() {
   if (!selectedClientId.value || !currentReading.value) {
-    toast.error('Select client and enter current reading!')
-    return
+    toast.error('Select client and enter current reading!');
+    return;
   }
 
-  if (isLoading.value) return // prevent double click
-  isLoading.value = true
-
-  const baseURL = import.meta.env.VITE_API_URL
-  let billData
-
   try {
-    // 1️⃣ Calculate bill
+    const baseURL = import.meta.env.VITE_API_URL;
+
     const response = await axios.post(
       `${baseURL}/api/clients/${selectedClientId.value}/calculate-bill/`,
       {
         current_reading: Number(currentReading.value),
         rate_per_unit: 120,
       }
-    )
+    );
 
-    billData = response.data
-    bill.value = billData
-    console.log('Calculated bill:', billData)
+    bill.value = response.data;
 
   } catch (err) {
-    console.error('Failed to calculate bill:', err.response?.data || err)
-    toast.error('Failed to calculate bill!')
-    isLoading.value = false
-    return
-  }
-
-  try {
-    // 2️⃣ Save reading
-    const res = await axios.post(`${baseURL}/api/readings/`, {
-      client: selectedClientId.value,
-      current_reading: billData.current_reading,
-    })
-
-    toast.success('Reading saved successfully!')
-    console.log('Saved reading:', res.data)
-
-    // 3️⃣ Navigate to history page
-    router.push('/history')
-
-  } catch (err) {
-    console.error('Failed to save reading:', err.response?.data || err)
-    toast.error('Failed to save reading!')
-  } finally {
-    isLoading.value = false
+    console.error('Failed to calculate bill:', err);
+    toast.error('Failed to calculate bill!');
   }
 }
 
+async function saveReading() {
+  if (!bill.value) return
+  try {
+    const baseURL = import.meta.env.VITE_API_URL
+    const res = await axios.post(`${baseURL}/api/readings/`, {
+      client: selectedClientId.value,
+      current_reading: bill.value.current_reading,
+    })
+    toast.success('Reading saved successfully!')
+    router.push('/history')
+    console.log('Saved reading:', res.data)
+  } catch (err) {
+    console.error('Failed to save reading:', err.response?.data || err)
+  }
+}
 
 // ✅ Print receipt
 function printReceipt() {
