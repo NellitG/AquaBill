@@ -143,6 +143,7 @@
 import { ref, computed, onMounted, watch } from "vue";
 import axios from "axios";
 
+
 const billingRecords = ref([]);
 const searchQuery = ref("");
 const showReceipt = ref(false);
@@ -157,12 +158,12 @@ const tableHeaders = [
   "Units", "Rate", "Total Bill", "Receipt No."
 ];
 
+// --- Fetch Data ---
 async function fetchRecords() {
   try {
     const baseURL = import.meta.env.VITE_API_BASE_URL;
     const res = await axios.get(`${baseURL}/api/readings/`);
-
-    let data = res.data;
+    const data = res.data;
 
     if (Array.isArray(data)) {
       billingRecords.value = data;
@@ -175,9 +176,11 @@ async function fetchRecords() {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
-} 
+}
+
 
 onMounted(fetchRecords);
+
 
 const filteredRecords = computed(() => {
   const q = (searchQuery.value || "").trim().toLowerCase();
@@ -192,10 +195,6 @@ const filteredRecords = computed(() => {
   );
 });
 
-watch([searchQuery, billingRecords], () => {
-  currentPage.value = 1;
-}); 
-
 const totalPages = computed(() =>
   Math.ceil(filteredRecords.value.length / itemsPerPage)
 );
@@ -205,8 +204,19 @@ const paginatedRecords = computed(() => {
   return filteredRecords.value.slice(start, start + itemsPerPage);
 });
 
-function nextPage() { if (currentPage.value < totalPages.value) currentPage.value++; }
-function prevPage() { if (currentPage.value > 1) currentPage.value--; }
+
+watch([searchQuery, billingRecords], () => {
+  currentPage.value = 1;
+});
+
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) currentPage.value++;
+}
+function prevPage() {
+  if (currentPage.value > 1) currentPage.value--;
+}
+
 
 function formatDate(dateStr) {
   if (!dateStr) return "—";
@@ -225,6 +235,7 @@ function formatNumber(value) {
   });
 }
 
+
 function openReceipt(record) {
   selectedRecord.value = record;
   showReceipt.value = true;
@@ -238,7 +249,6 @@ function printReceipt() {
   window.print();
 }
 </script>
-
 
 <style>
 body { font-family: "Inter", sans-serif; }
