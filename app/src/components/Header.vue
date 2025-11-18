@@ -85,10 +85,10 @@
 
             <hr class="border-gray-200" />
 
-            <a href="/signup" class="block py-2 text-center border border-green-500 rounded-lg hover:bg-green-500 hover:text-white transition">
+            <a href="/login" class="block py-2 text-center border border-green-500 rounded-lg hover:bg-green-500 hover:text-white transition">
               Login
             </a>
-            <a href="/login" class="block py-2 text-center bg-black text-white rounded-lg hover:bg-gray-800 transition">
+            <a href="/logout" class="block py-2 text-center bg-black text-white rounded-lg hover:bg-gray-800 transition">
               Logout
             </a>
           </ul>
