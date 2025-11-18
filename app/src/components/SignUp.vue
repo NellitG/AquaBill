@@ -1,10 +1,10 @@
 <template>
   <div
-    class="flex min-h-screen w-screen items-center justify-center text-gray-600"
+    class="flex min-h-screen w-screen items-center justify-center text-gray-600 bg-gray-50"
   >
     <div class="relative">
       <div
-        class="hidden sm:block h-56 w-56 text-green-600 absolute a-z-10 -left-20 -top-20"
+        class="hidden sm:block h-56 w-56 text-orange-300 absolute a-z-10 -left-20 -top-20"
       >
         <svg
           id="patternId"
@@ -38,7 +38,7 @@
         </svg>
       </div>
       <div
-        class="hidden sm:block h-28 w-28 text-green-600 absolute a-z-10 -right-20 -bottom-20"
+        class="hidden sm:block h-28 w-28 text-orange-300 absolute a-z-10 -right-20 -bottom-20"
       >
         <svg
           id="patternId"
@@ -73,7 +73,7 @@
       </div>
       <!-- Register -->
       <div
-        class="relative flex flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-orange-100 shadow-lg px-4"
+        class="relative flex flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-green-100 shadow-lg px-4"
       >
         <div class="flex-auto p-6">
           <!-- Logo -->
@@ -82,7 +82,7 @@
           >
             <a
               href="#"
-              class="flex cursor-pointer items-center gap-2 text-green-500 no-underline hover:text-green-500"
+              class="flex cursor-pointer items-center gap-2 text-orange-500 no-underline hover:text-orange-500"
             >
               <img
                 class="h-8 mr-4"
@@ -94,27 +94,11 @@
           </div>
           <!-- /Logo -->
           <h4 class="mb-2 font-medium text-gray-700 xl:text-xl">
-            Welcome to Tusafiri!
+            Login To Tusafiri
           </h4>
-          <p class="mb-6 text-gray-500">
-            Please sign-up to access your account
-          </p>
+          <p class="mb-6 text-gray-500">Please Login to access your account</p>
 
-          <form id="" class="mb-4" action="https://formspree.io/f/xyznrovb" method="POST">
-            <div class="mb-4">
-              <label
-                for="email"
-                class="mb-2 inline-block text-xs font-medium uppercase text-gray-700"
-                >Name</label
-              >
-              <input
-                type="text"
-                class="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-green-500 focus:bg-white focus:text-gray-600 focus:shadow"
-                id="email"
-                name="email-username"
-                placeholder="Enter your rname"
-              />
-            </div>
+          <form id="" class="mb-4" action="#" method="POST">
             <div class="mb-4">
               <label
                 for="email"
@@ -123,24 +107,10 @@
               >
               <input
                 type="text"
-                class="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-green-500 focus:bg-white focus:text-gray-600 focus:shadow"
+                class="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-orange-500 focus:bg-white focus:text-gray-600 focus:shadow"
                 id="email"
                 name="email-username"
-                placeholder="Enter your email "
-              />
-            </div>
-            <div class="mb-4">
-              <label
-                for="email"
-                class="mb-2 inline-block text-xs font-medium uppercase text-gray-700"
-                >Phone</label
-              >
-              <input
-                type="int"
-                class="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-green-500 focus:bg-white focus:text-gray-600 focus:shadow"
-                id="email"
-                name="email-username"
-                placeholder="Enter your phone"
+                placeholder="Enter your email"
               />
             </div>
             <div class="mb-4">
@@ -152,7 +122,7 @@
                 >
                 <a
                   href="auth-forgot-password-basic.html"
-                  class="cursor-pointer text-green-500 no-underline hover:text-green-500"
+                  class="cursor-pointer text-orange-500 no-underline hover:text-orange-500"
                 >
                   <small class=" ">Forgot Password?</small>
                 </a>
@@ -161,7 +131,7 @@
                 <input
                   type="password"
                   id="password"
-                  class="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-green-500 focus:text-gray-600 focus:shadow"
+                  class="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-orange-500 focus:text-gray-600 focus:shadow"
                   name="password"
                   placeholder="············"
                 />
@@ -176,32 +146,21 @@
             </div>
             <div class="mb-4">
               <button
-                class="grid w-full cursor-pointer select-none rounded-md border border-green-500 bg-green-500 py-2 px-5 text-center align-middle text-sm text-black shadow hover:border-green-600 hover:bg-green-600 hover:text-white focus:border-green-600 focus:bg-green-600 focus:text-white focus:shadow-none"
+                class="grid w-full cursor-pointer select-none rounded-md border border-orange-500 bg-orange-500 py-2 px-5 text-center align-middle text-sm text-black shadow hover:border-orange-600 hover:bg-orange-600 hover:text-white focus:border-orange-600 focus:bg-orange-600 focus:text-white focus:shadow-none"
                 type="submit"
               >
-                Sign Up
+                Sign in
               </button>
             </div>
           </form>
-
-          <p class="mb-4 text-center">
-            Have an account?
-            <a
-              href="/Login"
-              class="cursor-pointer text-green-500 no-underline hover:text-green-500"
-            >
-              Sign In
-            </a>
-          </p>
-          <!-- Social Login -->
           <div class="mb-4 flex items-center justify-center">
-            <span class="text-xs text-gray-500">Or sign up with</span>
+            <span class="text-xs text-gray-500">Or sign in with</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Google -->
             <button
-              class="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow hover:border-green-500 hover:text-green-600 transition-colors sm:px-3 sm:py-2 sm:text-sm xs:px-2 xs:py-1 xs:text-xs"
+              class="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow hover:border-orange-500 hover:text-orange-600 transition-colors sm:px-3 sm:py-2 sm:text-sm xs:px-2 xs:py-1 xs:text-xs"
               title="Sign up with Google"
             >
               <svg
@@ -334,8 +293,20 @@
               <span class="sm:inline">Apple</span>
             </button>
           </div>
+          <br />
+
+          <p class="mb-4 text-center">
+            New on Tusafiri
+            <a
+              href="/SignUp"
+              class="cursor-pointer text-orange-500 no-underline hover:text-orange-500"
+            >
+              Create an account
+            </a>
+          </p>
         </div>
       </div>
+      <!-- /Register -->
     </div>
   </div>
 </template>
