@@ -169,14 +169,14 @@ async function fetchRecords() {
     } else if (Array.isArray(data.results)) {
       billingRecords.value = data.results;
     } else {
-      billingRecords.value = []
+      billingRecords.value = [];
     }
-
   } catch (err) {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
-}
+} 
+
 onMounted(fetchRecords);
 
 const filteredRecords = computed(() => {
@@ -194,7 +194,7 @@ const filteredRecords = computed(() => {
 
 watch([searchQuery, billingRecords], () => {
   currentPage.value = 1;
-});
+}); 
 
 const totalPages = computed(() =>
   Math.ceil(filteredRecords.value.length / itemsPerPage)
@@ -238,6 +238,7 @@ function printReceipt() {
   window.print();
 }
 </script>
+
 
 <style>
 body { font-family: "Inter", sans-serif; }
