@@ -161,8 +161,10 @@ const tableHeaders = [
 // --- Fetch Data ---
 async function fetchRecords() {
   try {
-    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const baseURL = import.meta.env.VITE_API_URL;
     const res = await axios.get(`${baseURL}/api/readings/`);
+    console.log(res.data);
+
     let data = res.data;
 
     if (Array.isArray(data)) {
