@@ -163,14 +163,22 @@ async function fetchRecords() {
   try {
     const baseURL = import.meta.env.VITE_API_BASE_URL;
     const res = await axios.get(`${baseURL}/api/readings/`);
-    const data = res.data;
+    let data = res.data;
 
     if (Array.isArray(data)) {
       billingRecords.value = data;
+      console.log("Data loaded as array:", data.length, "records.");
+
     } else if (Array.isArray(data.results)) {
       billingRecords.value = data.results;
+      console.log("Data loaded from results array:", data.results.length, "records.");
+      
+    } else if (data && typeof data === 'object' && data.id && data.client_name) {
+      billingRecords.value = [data];
+      console.log("Data loaded as single record, wrapped in array:", data);
     } else {
       billingRecords.value = [];
+      console.warn("API response structure unexpected, setting records to empty array.", data);
     }
   } catch (err) {
     console.error("Error fetching billing records:", err);
