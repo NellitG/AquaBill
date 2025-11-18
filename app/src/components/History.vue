@@ -169,17 +169,14 @@ async function fetchRecords() {
       billingRecords.value = data;
     } else if (Array.isArray(data.results)) {
       billingRecords.value = data.results;
-    } else if (typeof data === "object" && data !== null) {
-      billingRecords.value = [data];
     } else {
-      billingRecords.value = [];
+      billingRecords.value = []
     }
 
   } catch (err) {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
-}
 onMounted(fetchRecords);
 
 const filteredRecords = computed(() => {
