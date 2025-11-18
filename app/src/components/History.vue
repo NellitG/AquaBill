@@ -95,7 +95,6 @@
     <!-- Receipt Modal -->
     <div v-if="showReceipt"
       class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-
       <div ref="receiptRef"
         class="bg-white w-[420px] p-6 rounded-lg shadow-2xl relative print:w-full print:p-4">
 
@@ -177,6 +176,7 @@ async function fetchRecords() {
     console.error("Error fetching billing records:", err);
     billingRecords.value = [];
   }
+}
 onMounted(fetchRecords);
 
 const filteredRecords = computed(() => {
