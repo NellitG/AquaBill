@@ -71,7 +71,7 @@ async function handleLogin() {
 
   } catch (error) {
     console.error("Login failed:", error.response?.data || error);
-    alert("Invalid credentials or server error.");
+    alert("Failed to login");
   }
 }
 </script>
