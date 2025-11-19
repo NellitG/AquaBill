@@ -21,7 +21,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem("token");
 
-  const protectedRoutes = ["/dashboard", "/clients", "/readings", "/history"];
+  const protectedRoutes = ["/hero", "/clients", "/readings", "/history"];
 
   // If you're hitting a protected route without a token → redirect to login
   if (protectedRoutes.includes(to.path) && !isAuthenticated) {
