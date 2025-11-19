@@ -26,10 +26,10 @@
 
         <!-- Right side buttons + Hamburger -->
         <div class="flex items-center space-x-3">
-          <a href="/signup" class="hidden sm:inline px-4 py-2 hover:bg-blue-400 border border-blue-400 text-black rounded-lg text-sm">
+          <a href="/login" class="hidden sm:inline px-4 py-2 hover:bg-blue-400 border border-blue-400 text-black rounded-lg text-sm">
             Login
           </a>
-          <a href="/login" class="hidden sm:inline px-4 py-2 bg-blue-400 text-white rounded-lg text-sm">
+          <a href="/logout" class="hidden sm:inline px-4 py-2 bg-blue-400 text-white rounded-lg text-sm">
             Logout
           </a>
 
@@ -85,7 +85,7 @@
 
             <hr class="border-gray-200" />
 
-            <a href="/Signup" class="block py-2 text-center bg-black text-white rounded-lg hover:bg-gray-800 transition">
+            <a href="/login" class="block py-2 text-center bg-black text-white rounded-lg hover:bg-gray-800 transition">
               Login
             </a>
             <a href="/logout" class="block py-2 text-center border border-green-500 rounded-lg hover:bg-green-500 hover:text-white transition">

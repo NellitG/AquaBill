@@ -73,12 +73,12 @@
       </div>
       <!-- Register -->
       <div
-        class="relative flex flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-green-100 shadow-lg px-4"
+        class="relative flex flex-col rounded-lg border-gray-400 bg-green-100 shadow-lg px-4"
       >
         <div class="flex-auto p-6">
           <!-- Logo -->
           <div
-            class="mb-10 flex flex-shrink-0 flex-grow-0 items-center justify-center overflow-hidden"
+            class="mb-10 flex  items-center justify-center overflow-hidden"
           >
             <a
               href="#"
