@@ -6,7 +6,7 @@ import PiniaTest from "./PiniaTest.vue";
 import ClientsView from "./ClientsView.vue";
 import ReadingsView from "./ReadingsView.vue";
 import HistoryView from "./HistoryView.vue";
-// import SignUpView from "./SignUpView.vue";
+import LogoutView from "./LogoutView.vue";
 import DestinationView from "./DestinationView.vue";
 
-export { HomeView, DetailsView, LoginView, PostsView, PiniaTest, ClientsView, ReadingsView, HistoryView, SignUpView, DestinationView };
+export { HomeView, DetailsView, LoginView, PostsView, PiniaTest, ClientsView, ReadingsView, HistoryView, LogoutView, DestinationView };
