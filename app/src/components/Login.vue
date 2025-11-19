@@ -61,7 +61,7 @@ async function handleLogin() {
       password: password.value
     });
 
-    console.log("Login successful:", response.data);
+    toast.success("Login successful:", response.data);
 
     
     localStorage.setItem("token", response.data.token);
@@ -71,7 +71,7 @@ async function handleLogin() {
 
   } catch (error) {
     console.error("Login failed:", error.response?.data || error);
-    alert("Failed to login");
+    toast.error("Failed to login");
   }
 }
 </script>
