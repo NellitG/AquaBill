@@ -52,6 +52,9 @@ onMounted(() => {
 });
 
 function handleLogout() {
+  // Clear all local storage data
+  localStorage.clear();
+  
   // Clear token and username from localStorage
   localStorage.removeItem("token");
   localStorage.removeItem("username");

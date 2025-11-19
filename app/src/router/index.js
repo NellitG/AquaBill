@@ -17,4 +17,18 @@ const router = createRouter({
   routes,
 });
 
+// 🔥 Global Auth Guard
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  const protectedRoutes = ["/clients", "/readings", "/history"];
+
+  // If you're hitting a protected route without a token → redirect to login
+  if (protectedRoutes.includes(to.path) && !isAuthenticated) {
+    return next("/login");
+  }
+
+  next();
+});
+
 export default router;
