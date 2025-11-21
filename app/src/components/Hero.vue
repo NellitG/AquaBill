@@ -99,7 +99,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-
 const totalClients = ref(0);
 const totalReadings = ref(0);
 const totalRevenue = ref(0);
@@ -121,11 +120,43 @@ const revenueChartOptions = ref({
   colors: ["#10b981"],
 });
 
+const resetDashboard = () => {
+  totalClients.value = 0;
+  totalReadings.value = 0;
+  totalRevenue.value = 0;
+  monthRevenue.value = 0;
+
+  consumptionSeries.value = [{ name: "Consumption", data: [] }];
+  revenueSeries.value = [{ name: "Revenue", data: [] }];
+
+  consumptionChartOptions.value.xaxis.categories = [];
+  revenueChartOptions.value.xaxis.categories = [];
+};
+
 onMounted(async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    resetDashboard();
+    return;
+  }
+
   try {
-    const baseURL = import.meta.env.VITE_API_URL
-    const res = await fetch(`${baseURL}/api/dashboard-stats/`);
+    const baseURL = import.meta.env.VITE_API_URL;
+
+    const res = await fetch(`${baseURL}/api/dashboard-stats/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      resetDashboard();
+      return;
+    }
+
     const data = await res.json();
+
 
     totalClients.value = data.total_clients;
     totalReadings.value = data.total_readings;
@@ -143,11 +174,13 @@ onMounted(async () => {
     ];
     revenueChartOptions.value.xaxis.categories =
       data.revenue_trend.months;
-  } catch (err) {
-    console.error("Failed to load dashboard data:", err);
+  } catch (error) {
+    console.error("Failed to load dashboard data:", error);
+    resetDashboard(); 
   }
 });
 </script>
+
 
 <style scoped>
 body {
