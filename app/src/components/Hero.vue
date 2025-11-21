@@ -146,7 +146,7 @@ onMounted(async () => {
 
     const res = await fetch(`${baseURL}/api/dashboard-stats/`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Token ${token}`,
       },
     });
 
@@ -156,7 +156,6 @@ onMounted(async () => {
     }
 
     const data = await res.json();
-
 
     totalClients.value = data.total_clients;
     totalReadings.value = data.total_readings;
