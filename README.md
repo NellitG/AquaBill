@@ -45,7 +45,7 @@ Your system actually covers many core billing operations, but here they are fram
 
   View individual client billing info
 
-  Searchable listing (fix this if your current one is slow)
+  Searchable listing 
 
 # 3. Meter Readings
 
@@ -65,7 +65,7 @@ Your system actually covers many core billing operations, but here they are fram
 
   Click-to-view detailed receipt
 
-  Export capability (add CSV/PDF export if you want to impress)
+  
 
 # 5. Receipt Printing
 
@@ -73,7 +73,7 @@ Your system actually covers many core billing operations, but here they are fram
 
   Includes reading data, charges, totals, and client information
 
-  Print-ready modal (don’t ship ugly receipts—design matters)
+  Print-ready modal 
 
 # 🏗️ Tech Stack
 
