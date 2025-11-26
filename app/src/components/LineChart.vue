@@ -6,7 +6,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-import { Chart, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+// import { Chart, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 
 // Register components
 Chart.register(LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
