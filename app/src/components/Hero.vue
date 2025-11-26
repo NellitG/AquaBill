@@ -79,9 +79,9 @@
         <!-- Monthly Consumption Chart -->
         <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
-            Monthly Consumption
+            Monthly Consumption (units Used)
           </h2>
-          <apexchart type="bar" height="300" :options="consumptionChartOptions" :series="consumptionSeries" />
+          <apexchart type="line" height="300" :options="consumptionChartOptions" :series="consumptionSeries" />
         </div>
 
         <!-- Revenue Trend Chart -->
@@ -109,9 +109,14 @@ const revenueSeries = ref([{ name: "Revenue", data: [] }]);
 
 const consumptionChartOptions = ref({
   chart: { toolbar: { show: false } },
+  stroke: { curve: "smooth", width: 3 },
+  markers: { size: 5 },
   xaxis: { categories: [] },
+  yaxis: { title: { text: "Units Consumed" } },
   colors: ["#3b82f6"],
+  tooltip: { shared: true, intersect: false },
 });
+
 
 const revenueChartOptions = ref({
   chart: { toolbar: { show: false } },
@@ -126,7 +131,7 @@ const resetDashboard = () => {
   totalRevenue.value = 0;
   monthRevenue.value = 0;
 
-  consumptionSeries.value = [{ name: "Consumption", data: [] }];
+  consumptionSeries.value = [{ name: "Units Consumed", data: data.monthly_consumption.values }];
   revenueSeries.value = [{ name: "Revenue", data: [] }];
 
   consumptionChartOptions.value.xaxis.categories = [];
