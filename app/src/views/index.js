@@ -8,5 +8,6 @@ import ReadingsView from "./ReadingsView.vue";
 import HistoryView from "./HistoryView.vue";
 import LogoutView from "./LogoutView.vue";
 import DestinationView from "./DestinationView.vue";
+import ClientDetailsView from "./ClientDetailsView.vue";
 
-export { HomeView, DetailsView, LoginView, PostsView, PiniaTest, ClientsView, ReadingsView, HistoryView, LogoutView, DestinationView };
+export { HomeView, DetailsView, LoginView, PostsView, PiniaTest, ClientsView, ReadingsView, HistoryView, LogoutView, DestinationView, ClientDetailsView };

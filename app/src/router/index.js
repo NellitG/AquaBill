@@ -11,6 +11,7 @@ const routes = [
   { path: "/history", name: "history", component: () => import("@/views/HistoryView.vue") },
   { path: "/logout", name: "logout", component: () => import("@/views/LogoutView.vue") },
   { path: "/destination", name: "destination", component: () => import("@/views/DestinationView.vue") },
+  { path: "/clients/:id", name: "clientDetails", component: () => import("@/views/ClientDetailsView.vue"), props: true },
 ];
 
 const router = createRouter({

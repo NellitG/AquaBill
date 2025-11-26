@@ -43,11 +43,13 @@
               class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 sm:px-6 rounded-lg shadow-md transition duration-150 text-sm sm:text-base">
               {{ editingClient ? 'Save Changes' : 'Add Client' }}
             </button>
+
             <button type="button" @click="resetForm"
               class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2.5 px-4 sm:px-6 rounded-lg transition duration-150 text-sm sm:text-base">
               Cancel
             </button>
           </div>
+
         </form>
       </div>
 
@@ -69,17 +71,25 @@
                 <th class="py-3 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
+
             <tbody class="divide-y divide-gray-100">
-              <tr v-for="client in paginatedClients" :key="client.id" class="hover:bg-gray-50">
+              <tr
+                v-for="client in paginatedClients"
+                :key="client.id"
+                class="hover:bg-gray-50 cursor-pointer"
+                @click="goToDetails(client.id)"
+              >
                 <td class="py-3 px-4 font-medium text-gray-900">{{ client.name }}</td>
                 <td class="py-3 px-4 text-gray-600">{{ client.phone }}</td>
                 <td class="py-3 px-4 text-gray-600">{{ client.meter_number }}</td>
                 <td class="py-3 px-4 text-gray-600">{{ formatDate(client.created_at) }}</td>
-                <td class="py-3 px-4 text-right space-x-2">
+
+                <td class="py-3 px-4 text-right space-x-2" @click.stop>
                   <button @click="startEdit(client)"
                     class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm">
                     Edit
                   </button>
+
                   <button @click="deleteClient(client.id)"
                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm">
                     Delete
@@ -87,20 +97,26 @@
                 </td>
               </tr>
             </tbody>
+
           </table>
 
-          <!-- Pagination Controls -->
+          <!-- Pagination -->
           <div class="flex justify-center items-center mt-4 space-x-3">
             <button @click="prevPage" :disabled="currentPage === 1"
               class="px-3 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300">
               ← Previous
             </button>
-            <span class="text-sm text-gray-700">Page {{ currentPage }} of {{ totalPages }}</span>
+
+            <span class="text-sm text-gray-700">
+              Page {{ currentPage }} of {{ totalPages }}
+            </span>
+
             <button @click="nextPage" :disabled="currentPage === totalPages"
               class="px-3 py-2 bg-gray-200 text-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300">
               Next →
             </button>
           </div>
+
         </div>
       </div>
 
@@ -111,7 +127,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 import { toast } from "vue3-toastify"
+
+const router = useRouter()
 
 const clients = ref([])
 const loading = ref(false)
@@ -124,38 +143,40 @@ const form = ref({
   meter_number: ''
 })
 
-// Pagination
 const currentPage = ref(1)
 const itemsPerPage = 5
 
 const baseURL = import.meta.env.VITE_API_URL
 
-// ✅ Fetch clients
+// NAVIGATE TO DETAILS PAGE
+function goToDetails(id) {
+  router.push(`/clients/${id}`)
+}
+
+// FETCH CLIENTS
 async function fetchClients() {
   try {
     loading.value = true
     const response = await axios.get(`${baseURL}/api/clients/`)
     clients.value = response.data
   } catch (err) {
-    console.error(err)
     error.value = 'Failed to load clients'
   } finally {
     loading.value = false
   }
 }
 
-// ✅ Pagination logic
+// PAGINATION
 const totalPages = computed(() => Math.ceil(clients.value.length / itemsPerPage))
 const paginatedClients = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return clients.value.slice(start, end)
+  return clients.value.slice(start, start + itemsPerPage)
 })
 
 function nextPage() { if (currentPage.value < totalPages.value) currentPage.value++ }
 function prevPage() { if (currentPage.value > 1) currentPage.value-- }
 
-// ✅ Add new client
+// ADD CLIENT
 async function addClient() {
   if (!form.value.name || !form.value.phone || !form.value.meter_number) {
     toast.error("All fields are required!")
@@ -165,65 +186,55 @@ async function addClient() {
     const res = await axios.post(`${baseURL}/api/clients/`, form.value)
     clients.value.push(res.data)
     resetForm()
-    toast.success("Client added successfully!")
+    toast.success("Client added!")
     currentPage.value = totalPages.value
-  } catch (err) {
-    console.error(err)
+  } catch {
     toast.error("Failed to add client")
   }
 }
 
-// ✅ Start editing
+// EDIT
 function startEdit(client) {
   editingClient.value = client.id
   form.value = { ...client }
 }
 
-// ✅ Update client
+// UPDATE
 async function updateClient() {
-  if (!form.value.name || !form.value.phone || !form.value.meter_number) {
-    toast.error("All fields are required!")
-    return
-  }
   try {
     await axios.put(`${baseURL}/api/clients/${editingClient.value}/`, form.value)
     const index = clients.value.findIndex(c => c.id === editingClient.value)
-    if (index !== -1) clients.value[index] = { ...form.value, id: editingClient.value }
-    editingClient.value = null
+    clients.value[index] = { ...form.value, id: editingClient.value }
     resetForm()
-    toast.success("Client updated successfully!")
-  } catch (err) {
-    console.error(err)
+    editingClient.value = null
+    toast.success("Client updated!")
+  } catch {
     toast.error("Failed to update client")
   }
 }
 
-// ✅ Delete client
+// DELETE
 async function deleteClient(id) {
-  if (!confirm("Are you sure you want to delete this client?")) return
+  if (!confirm("Delete client?")) return
   try {
     await axios.delete(`${baseURL}/api/clients/${id}/`)
     clients.value = clients.value.filter(c => c.id !== id)
-    toast.success("Client deleted successfully!")
-  } catch (err) {
-    console.error(err)
-    toast.error("Failed to delete client")
+    toast.success("Client deleted!")
+  } catch {
+    toast.error("Failed to delete")
   }
 }
 
-// ✅ Reset form
+// RESET
 function resetForm() {
-  editingClient.value = null
   form.value = { name: '', phone: '', meter_number: '' }
 }
 
-// ✅ Format date
+// FORMAT DATE
 function formatDate(dateString) {
   if (!dateString) return ''
-  const date = new Date(dateString)
-  return isNaN(date) ? '' : date.toLocaleDateString()
+  return new Date(dateString).toLocaleDateString()
 }
 
-// ✅ Fetch clients on mount
 onMounted(fetchClients)
 </script>
