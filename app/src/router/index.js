@@ -12,6 +12,7 @@ const routes = [
   { path: "/logout", name: "logout", component: () => import("@/views/LogoutView.vue") },
   { path: "/destination", name: "destination", component: () => import("@/views/DestinationView.vue") },
   { path: "/clients/:id", name: "clientDetails", component: () => import("@/views/ClientDetailsView.vue"), props: true },
+  { path: "/linechart", name: "linechart", component: () => import("@/views/LineChartView.vue") },
 ];
 
 const router = createRouter({
