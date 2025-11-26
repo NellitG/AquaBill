@@ -1,7 +1,7 @@
 <template>
-    <ClientDetails />
+    <!-- <ClientDetails /> -->
 </template>
 
 <script>
-import ClientDetails from '@/components/ClientDetails.vue';
+// import ClientDetails from '@/components/ClientDetails.vue';
 </script>

@@ -1,7 +1,7 @@
 <template>
-    <LineChart />
+    <!-- <LineChart /> -->
 </template>
 
 <script setup>
-    import LineChart from '@/components/LineChart.vue'
+    // import LineChart from '@/components/LineChart.vue'
 </script>
